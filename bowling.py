@@ -33,7 +33,7 @@ class Bowling:
             "round score: ",
             self.round_score,
             " round: ",
-            self.round + 1,
+            self.round,
             self.last_last_round_bonus,
             self.last_round_bonus,
         )
@@ -45,52 +45,45 @@ class Bowling:
         ):  # ==2 or >1 ?
             self.round += 1
             self.current_throw = "first"
-        elif self.round != 9:  # if not 10 pins and also not last round
+        else:
             self.current_throw = "second"
-        else:  # last round
-            pass
 
     def update_score(self):
         # print(self.round, self.pins_thown_per_round)
+        # two consecutive strikes
         if self.round >= 2 and self.last_last_round_bonus:
             self.round_score[self.round - 2] = (
-                20 + self.pins_thown_per_round[self.round][0]
+                20
+                + self.pins_thown_per_round[self.round][0]
+                + self.round_score[self.round - 3]
             )
 
         if self.round >= 1 and self.last_round_bonus:
             self.round_score[self.round - 1] = (
-                10 + self.pins_thown_per_round[self.round][0]
+                10
+                + sum(self.pins_thown_per_round[self.round])
+                + self.round_score[self.round - 2]
             )
 
-        elif self:
-            self.round_score[self.round] = sum(self.pins_thown_per_round[self.round])
+        self.round_score[self.round] = sum(self.pins_thown_per_round[self.round]) + (
+            0 if self.round == 0 else self.round_score[self.round - 1]
+        )
 
     def adjust_bonuses(self):
-        # self.last_round_bonus = False
         self.last_last_round_bonus = False
-        # if first throw and strike
-        if (
-            self.pins_thown_per_round[self.round][0] == 10
-            or sum(self.pins_thown_per_round[self.round]) == 10
-        ):
-            # if consecutive strike add last last bonus
-            if self.last_round_bonus:
-                self.last_last_round_bonus = True
-            self.last_round_bonus = True
-        else:
-            # if second throw and spare last round bonus = True
+        if self.current_throw == "first":
             if sum(self.pins_thown_per_round[self.round]) == 10:
+                if self.last_round_bonus == True:
+                    self.last_last_round_bonus = True
                 self.last_round_bonus = True
-
-        # ll = F,  l = F
-        # x x x 9 1 8 1
-        # if len(1): # strike #
-        #    #if last_round_bonus: last_last_round_bonus = True
-        #   else last_round_bonus = True
-        # else
-
-        # if score not 10 > last_round_bonus = False
-        # last_last =false
+            elif (
+                len(self.pins_thown_per_round[self.round - 1]) == 2
+            ):  # didnt throw all pins
+                self.last_round_bonus = False
+        else:  # second throw
+            self.last_round_bonus = (
+                True if sum(self.pins_thown_per_round[self.round]) == 10 else False
+            )
 
 
 bowling_test = Bowling()
