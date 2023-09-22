@@ -42,11 +42,13 @@ class Bowling:
         if (
             sum(self.pins_thown_per_round[self.round]) == 10
             or len(self.pins_thown_per_round[self.round]) == 2
-        ):  # ==2 or >1 ?
+        ) and self.round < 9:  # ==2 or >1 ?
             self.round += 1
             self.current_throw = "first"
-        else:
+        elif self.current_throw == "first":
             self.current_throw = "second"
+        else:  # for last round only
+            self.current_throw = "third"
 
     def update_score(self):
         # print(self.round, self.pins_thown_per_round)
@@ -80,10 +82,12 @@ class Bowling:
                 len(self.pins_thown_per_round[self.round - 1]) == 2
             ):  # didnt throw all pins
                 self.last_round_bonus = False
-        else:  # second throw
+        elif self.current_throw == "second":  # second throw
             self.last_round_bonus = (
                 True if sum(self.pins_thown_per_round[self.round]) == 10 else False
             )
+        else:
+            self.last_round_bon1us = False
 
 
 bowling_test = Bowling()
