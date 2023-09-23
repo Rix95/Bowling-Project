@@ -8,8 +8,6 @@ class Bowling:
         self.round_score = [0 for _ in range(10)]
         self.round_bonus = [None for _ in range(10)]
         self.round = 0
-        # self.last_round_bonus = False
-        # self.last_last_round_bonus = False
 
     def play_round(self):
         # check if the game is over
@@ -142,12 +140,3 @@ class Bowling:
 
     def adjust_bonuses(self, current_throw):
         self.round_bonus[self.round] = "strike" if current_throw == "first" else "spare"
-
-
-bowling_test = Bowling()
-while True:
-    user_input = input("please throw something or press exit to exit.")
-    if user_input == "exit":
-        break
-    else:
-        bowling_test.throw(int(user_input))
