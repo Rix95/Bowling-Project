@@ -14,6 +14,8 @@ class Bowling:
             for player in self.players:
                 self.play_round(player)
             self.round += 1
+        for player in self.players:
+            self.play_last_round(player)
 
     def play_round(self, player):
         # check if the game is over
@@ -44,17 +46,24 @@ class Bowling:
 
         # test
 
-    def round_status(self):
-        if (
-            sum(self.pins_thown_per_round[self.round]) == 10
-            or len(self.pins_thown_per_round[self.round]) == 2
-        ) and self.round < 9:  # ==2 or >1 ?
-            self.round += 1
-            self.current_throw = "first"
-        elif self.current_throw == "first":
-            self.current_throw = "second"
-        else:  # for last round only
-            self.current_throw = "third"
+    def play_last_round(self, player):
+        # play last round with 3 throws if strike or spare reset pins_left
+        pins_left = player.throw(
+            MAX_PINS, "first"
+        )  # first throw should adjust bonus as normal
+        self.adjust_bonuses(player, "first")
+
+        if pins_left == 0:  # if strike
+            pins_left = player.throw(
+                MAX_PINS, "second"
+            )  # run again with all pins again
+        else:
+            pins_left = player.throw(pins_left, "second")
+
+            if pins_left == 0:
+                pins_left = player.throw(MAX_PINS, "third")
+            else:
+                "no further games, should adjust 8,9 and leave 10 as it is"
 
     def update_score(self, player, current_throw):
         points_to_add = 0
@@ -70,7 +79,6 @@ class Bowling:
                 cumulative[self.round - 1] = points_to_add + cumulative[self.round - 2]
 
             elif self.round >= 2 and round_bonus[self.round - 2] == "strike":
-                print("we cool?")
                 points_to_add = player.round_score[self.round - 2] = (
                     20 + player.pins_thrown_per_round[self.round][0]
                 )

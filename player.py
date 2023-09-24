@@ -16,6 +16,9 @@ class Player(ABC):
     def throw():
         pass
 
+    @abstractmethod
+    def last_throw():
+
     @property
     def pins_thrown_per_round(self, round=-1):
         return self._pins_thrown_per_round
