@@ -15,9 +15,9 @@ class Bowling:
             for player in self.players:
                 self.play_round(player)
 
-        print(self.round, "test")
-        # for player in self.players:
-        #   self.play_last_round(player)
+        for player in self.players:
+            if player.round_bonus[self.round] != None:
+                self.play_last_round(player)
 
     def play_round(self, player):
         # check if the game is over
@@ -46,7 +46,71 @@ class Bowling:
         # automatic TBD
 
     def play_last_round(self, player):
-        pass
+        #        if spare throw one more time and add score to final (easy)
+        current_throw = "first"
+        pins_left = MAX_PINS
+        if player.round_bonus[self.round] == "spare":
+            first_throw = player.throw(pins_left, "first")
+            player.pins_thrown_per_round[self.round].append(first_throw)
+        else:
+            first_throw = player.throw(MAX_PINS, "first")
+            player.pins_thrown_per_round[self.round].append(first_throw)
+            self.last_round_score_updater(player, current_throw)
+            print(
+                "Your score is: ",
+                player.score,
+                player.round_score,
+                player.cumulative_round_score,
+            )
+            if first_throw == MAX_PINS:
+                pins_left = MAX_PINS
+            else:
+                current_throw = "second"
+            second_throw = player.throw(pins_left, current_throw)
+            player.pins_thrown_per_round[self.round].append(second_throw)
+
+        self.last_round_score_updater(player, current_throw)
+        print("Your score is: ", player.score)
+
+    #        if strike throw two more times and add score to final, also check if round 9 was a strike and add that to score
+    def last_round_score_updater(self, player, current_throw):
+        # if bonus is spare then simply add the whole score to final round score
+        print(
+            "last+test",
+            current_throw,
+            player.round_bonus[self.round - 1],
+            player.round_bonus[self.round],
+            player.pins_thrown_per_round[self.round],
+        )
+        if player.round_bonus[self.round] == "spare":
+            print("or here")
+            to_add = player.round_score[self.round] = sum(
+                player.pins_thrown_per_round[self.round]
+            )
+            player.cumulative_round_score[self.round] = (
+                to_add + player.cumulative_round_score[self.round - 1]
+            )
+        else:
+            if (
+                len(player.pins_thrown_per_round[self.round]) == 2
+                and player.round_bonus[self.round - 1] == "strike"
+            ):
+                print("here?")
+                to_add = player.round_score[self.round - 1] = 10 + sum(
+                    player.pins_thrown_per_round[self.round]
+                )
+                player.cumulative_round_score[self.round - 1] = (
+                    to_add + player.cumulative_round_score[self.round - 2]
+                )
+            else:
+                to_add = player.round_score[self.round] = sum(
+                    player.pins_thrown_per_round[self.round]
+                )
+                player.cumulative_round_score[self.round] = (
+                    to_add + player.cumulative_round_score[self.round - 1]
+                )
+
+        player.score += to_add
 
     def update_score(self, player, current_throw):
         points_to_add = 0
