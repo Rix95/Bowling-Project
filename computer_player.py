@@ -53,16 +53,10 @@ class ComputerPlayer(Player):
 
     def get_random_second_throw(self, pins_left):
         difficulty = self.difficulty_dict[self.difficulty]
-        print(self.difficulty_weights_second_throw[difficulty])
         determinant = random.choices(
             range(2), weights=self.difficulty_weights_second_throw[difficulty]
         )[0]
-        print(
-            determinant,
-            "deter",
-            pins_left - 1,
-            self.difficulty_weights_first_throw[difficulty][0:pins_left],
-        )
+
         if determinant == 0:
             # return random.randint(0, pins_left - 1)  # ensure its not an spare
             return random.choices(

@@ -40,4 +40,7 @@ class Player(ABC):
     def score(self, score_to_add):
         self._score = score_to_add
 
+    def __str__(self) -> str:
+        return self.name
+
     # @property

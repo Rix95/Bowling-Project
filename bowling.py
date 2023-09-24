@@ -15,7 +15,8 @@ class Bowling:
             print("ROUND", self.round + 1, "of", MAX_ROUNDS)
             for player in self.players:
                 self.play_round(player)
-            print("Round", self.round + 1, "is over")
+                print("")
+            print("Round", self.round + 1, "is over\n")
             for player in self.players:
                 print(player.name, " score is: ", player.score)
                 print(player.cumulative_round_score)
@@ -25,6 +26,7 @@ class Bowling:
             if player.round_bonus[self.round] != None:
                 self.play_last_round(player)
             print(player.name, " Final score is: ", player.score)
+        self.determine_winner(self.players)
 
     def play_round(self, player):
         # check if the game is over
@@ -111,14 +113,6 @@ class Bowling:
         # print("////////////")
 
     def update_score_last_round(self, player, current_throw):
-        # print(
-        #     "Your score is: ",
-        #     player.score,
-        #     "round score: ",
-        #     player.round_score,
-        #     "cumulative: ",
-        #     player.cumulative_round_score,
-        # )
         # if bonus is spare then simply add the whole score to final round score
         if player.round_bonus[self.round] == "spare":
             to_add = player.round_score[self.round] = sum(
@@ -153,3 +147,22 @@ class Bowling:
         player.round_bonus[self.round] = (
             "strike" if current_throw == "first" else "spare"
         )
+
+    def determine_winner(self, players):
+        highest_score = 0
+
+        for player in players:
+            if player.score > highest_score:
+                winners = [player]
+                highest_score = player.score
+            elif player.score == highest_score:
+                winners.append(player)
+        if len(winners) > 1:
+            print("The winners are:")
+            for winner in winners:
+                print("-", winner.name)
+            print("with", winners[0].score, "points!")
+        else:
+            print(
+                "The winner is:", winners[0].name, "with", winners[0].score, "points!"
+            )
