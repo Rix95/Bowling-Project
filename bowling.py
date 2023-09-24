@@ -5,24 +5,25 @@ MAX_ROUNDS = 10
 class Bowling:
     def __init__(self, players):
         self.players = players
-        self.round = 0
+        self.round = -1
 
     def start_game(self):
         # for each player call playrond sequentially
 
-        while self.round < MAX_ROUNDS:
+        for _ in range(MAX_ROUNDS):
+            self.round += 1
             for player in self.players:
                 self.play_round(player)
-            self.round += 1
-        for player in self.players:
-            self.play_last_round(player)
+
+        print(self.round, "test")
+        # for player in self.players:
+        #   self.play_last_round(player)
 
     def play_round(self, player):
         # check if the game is over
         # if is_game_over():
         #   return
 
-        # Current implementation
         print("ROUND", self.round + 1, "of", MAX_ROUNDS)
         if player.type == "human":
             pins_left = MAX_PINS
@@ -44,26 +45,8 @@ class Bowling:
                 print("Your score is: ", player.score)
         # automatic TBD
 
-        # test
-
     def play_last_round(self, player):
-        # play last round with 3 throws if strike or spare reset pins_left
-        pins_left = player.throw(
-            MAX_PINS, "first"
-        )  # first throw should adjust bonus as normal
-        self.adjust_bonuses(player, "first")
-
-        if pins_left == 0:  # if strike
-            pins_left = player.throw(
-                MAX_PINS, "second"
-            )  # run again with all pins again
-        else:
-            pins_left = player.throw(pins_left, "second")
-
-            if pins_left == 0:
-                pins_left = player.throw(MAX_PINS, "third")
-            else:
-                "no further games, should adjust 8,9 and leave 10 as it is"
+        pass
 
     def update_score(self, player, current_throw):
         points_to_add = 0
@@ -91,7 +74,7 @@ class Bowling:
                 )
                 cumulative[self.round - 1] = points_to_add + cumulative[self.round - 2]
             # add points with no bonus, add previous as long as round > 0
-            else:
+            if sum(player.pins_thrown_per_round[self.round]) != MAX_PINS:
                 points_to_add = player.round_score[self.round] = sum(
                     player.pins_thrown_per_round[self.round]
                 )
