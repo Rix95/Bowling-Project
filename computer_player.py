@@ -18,7 +18,6 @@ class ComputerPlayer(Player):
 
     def throw(self, pins_left, current_throw):
         if current_throw == "first":
-            print("It's", self.name, "'s turn.")
             pins_thrown = self.get_random_first_throw()
             print(
                 self.name,

@@ -14,6 +14,7 @@ class Bowling:
             self.round += 1
             print("ROUND", self.round + 1, "of", MAX_ROUNDS)
             for player in self.players:
+                print("Its", player.name + "'s turn")
                 self.play_round(player)
                 print("")
             print("Round", self.round + 1, "is over\n")

@@ -4,7 +4,8 @@ import computer_player
 
 
 def main():
-    player = human_player.HumanPlayer(input("Enter your name: "))
+    first_player = human_player.HumanPlayer(input("Enter your name: "))
+    second_player = human_player.HumanPlayer(input("Enter your name: "))
 
     difficulty_ai = input(
         "Choose difficulty: easy, normal, hard, sans(not recomended): "
@@ -19,7 +20,7 @@ def main():
         ai_name = "Sans"
 
     computer = computer_player.ComputerPlayer(ai_name, difficulty_ai)
-    game = bowling.Bowling([player, computer])
+    game = bowling.Bowling([first_player, second_player, computer])
     game.start_game()
 
 
