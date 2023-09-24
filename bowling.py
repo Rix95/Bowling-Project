@@ -1,67 +1,48 @@
-class Bowling:
-    def __init__(self, players=1):
-        self.players = players
+MAX_PINS = 10
+MAX_ROUNDS = 10
 
-    def start_game(self):
-        self.score = 0
-        self.pins_thown_per_round = []
-        self.round_score = [0 for _ in range(10)]
-        self.round_bonus = [None for _ in range(10)]
+
+class Bowling:
+    def __init__(self, players):
+        self.players = players
         self.round = 0
 
-    def play_round(self):
+    def start_game(self):
+        # for each player call playrond sequentially
+
+        while self.round < MAX_ROUNDS:
+            for player in self.players:
+                self.play_round(player)
+            self.round += 1
+
+    def play_round(self, player):
         # check if the game is over
         # if is_game_over():
         #   return
 
-        # manual
-        first_throw = int(
-            user_input("please make your first throw or press exit to exit.")
-        )
-        self.throw(first_throw, "first")
+        # Current implementation
+        print("ROUND", self.round + 1, "of", MAX_ROUNDS)
+        if player.type == "human":
+            pins_left = MAX_PINS
+            current_throw = "first"
+            while pins_left > 0 and len(player.pins_thrown_per_round[self.round]) < 2:
+                pins_thrown = player.throw(pins_left, current_throw)
+                pins_left -= pins_thrown
+                player.pins_thrown_per_round[self.round].append(pins_thrown)
+                self.update_score(player, current_throw)
 
-        if first_throw == 10:
-            self.round_bonus[self.round] = "strike"
-        else:
-            second_throw = int(
-                user_input("please make your second throw or press exit to exit.")
-            )
-            self.throw(second_throw, "second")
-            if first_throw + second_throw == 10:
-                self.round_bonus[self.round] = "spare"
-        if self.get_round_pins() == 10:
-            self.adjust_bonuses()
+                if pins_left == 0:
+                    self.adjust_bonuses(player, current_throw)
+                    player.round_bonus[self.round] = (
+                        "strike" if current_throw == "first" else "spare"
+                    )
+                else:
+                    current_throw = "second"
 
+                print("Your score is: ", player.score)
         # automatic TBD
 
         # test
-
-    def throw(self, pins, current_throw):
-        # if first thorw else second throw
-        if current_throw == "first":
-            self.pins_thown_per_round.append([pins])  # use getter here ?
-        else:
-            self.pins_thown_per_round[self.round].append(pins)
-
-        self.update_score(current_throw)
-
-        # self.round_status()
-        # print(
-        #     "pin tracker, ",
-        #     self.pins_thown_per_round,
-        #     "round score: ",
-        #     self.round_score,
-        #     " round: ",
-        #     self.round,
-        #     self.last_last_round_bonus,
-        #     self.last_round_bonus,
-        # )
-
-    def get_round_pins(self):
-        return sum(self.pins_thown_per_round[self.round])
-
-    def get_bonus_at_round(self, round):  # self. or input?
-        return self.round_bonus[round]
 
     def round_status(self):
         if (
@@ -75,68 +56,48 @@ class Bowling:
         else:  # for last round only
             self.current_throw = "third"
 
-    def update_score(self, current_throw):
+    def update_score(self, player, current_throw):
+        points_to_add = 0
+        cumulative = player.cumulative_round_score
+        round_score = player.round_score
+        round_bonus = player.round_bonus
+
         if current_throw == "first":
-            if self.round >= 1 and self.get_bonus_at_round(self.round - 1) == "spare":
-                self.round_score[self.round - 1] = (
-                    10
-                    + self.pins_thown_per_round[self.round][0]
-                    + self.round_score[self.round - 2]
+            if self.round >= 1 and round_bonus[self.round - 1] == "spare":
+                points_to_add = player.round_score[self.round - 1] = (
+                    10 + player.pins_thrown_per_round[self.round][0]
                 )
-            elif (
-                self.round >= 2 and self.get_bonus_at_round(self.round - 2) == "strike"
-            ):
-                self.round_score[self.round - 2] = (
-                    20
-                    + self.pins_thown_per_round[self.round][0]
-                    + self.round_score[self.round - 3]
+                cumulative[self.round - 1] = points_to_add + cumulative[self.round - 2]
+
+            elif self.round >= 2 and round_bonus[self.round - 2] == "strike":
+                print("we cool?")
+                points_to_add = player.round_score[self.round - 2] = (
+                    20 + player.pins_thrown_per_round[self.round][0]
                 )
+                cumulative[self.round - 2] = points_to_add + cumulative[self.round - 3]
         else:  # <- second throw
             # add points if previous round is a strike
-            if self.round >= 1 and self.get_bonus_at_round(self.round - 1) == "strike":
-                self.round_score[self.round - 1] = (
-                    10
-                    + sum(self.pins_thown_per_round[self.round])
-                    + self.round_score[self.round - 2]
+            if self.round >= 1 and round_bonus[self.round - 1] == "strike":
+                points_to_add = player.round_score[self.round - 1] = 10 + sum(
+                    player.pins_thrown_per_round[self.round]
                 )
+                cumulative[self.round - 1] = points_to_add + cumulative[self.round - 2]
             # add points with no bonus, add previous as long as round > 0
             else:
-                self.round_score[self.round] = sum(
-                    self.pins_thown_per_round[self.round]
-                ) + (0 if self.round == 0 else self.round_score[self.round - 1])
+                points_to_add = player.round_score[self.round] = sum(
+                    player.pins_thrown_per_round[self.round]
+                )
+                cumulative[self.round] = points_to_add + cumulative[self.round - 1]
+        print("//////////")
+        print(
+            self.round,
+            current_throw,
+            player.round_score,
+            player.cumulative_round_score,
+        )
+        print("////////////")
 
-        # if first and
-        # if prev-2 strike
-        # if prev-1 spare
-        # if second
-        # if prev-1 strike
-        #  else add as basic :(
-
-        # print(self.round, self.pins_thown_per_round)
-        # two consecutive strikes
-        # if self.round >= 2 and self.get_bonus_at_round(self.round - 2) == "strike":
-        #     self.round_score[self.round - 2] = (
-        #         20
-        #         + self.pins_thown_per_round[self.round][0]
-        #         + self.round_score[self.round - 3]
-        #     )
-
-        # if self.round >= 1 and (
-        #     (
-        #         self.get_bonus_at_round(self.round - 1) == "strike"
-        #         and current_throw == "second"
-        #     )
-        #     or self.get_bonus_at_round(self.round - 1) == "spare"
-        # ):
-        #     self.round_score[self.round - 1] = (
-        #         10
-        #         + sum(self.pins_thown_per_round[self.round])
-        #         + self.round_score[self.round - 2]
-        #     )
-
-        # self.round_score[self.round] = sum(self.pins_thown_per_round[self.round]) + (
-        #     0 if self.round == 0 else self.round_score[self.round - 1]
-        # )
-
-    def adjust_bonuses(self, current_throw):
-        self.round_bonus[self.round] = "strike" if current_throw == "first" else "spare"
+    def adjust_bonuses(self, player, current_throw):
+        player.round_bonus[self.round] = (
+            "strike" if current_throw == "first" else "spare"
+        )
