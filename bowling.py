@@ -88,6 +88,8 @@ class Bowling:
                     player.pins_thrown_per_round[self.round]
                 )
                 cumulative[self.round] = points_to_add + cumulative[self.round - 1]
+
+        player.score = sum(player.round_score)
         print("//////////")
         print(
             self.round,

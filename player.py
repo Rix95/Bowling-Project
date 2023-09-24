@@ -37,7 +37,7 @@ class Player(ABC):
         return self._score
 
     @score.setter
-    def score(self, new_score):
-        self._score += sum(self.round_score)
+    def score(self, score_to_add):
+        self._score = score_to_add
 
     # @property
