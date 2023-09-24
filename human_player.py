@@ -11,7 +11,7 @@ class HumanPlayer(Player):
         print(
             "You knocked down",
             pins_thrown,
-            "pins.",
+            "pin(s)",
             pins_left - pins_thrown,
             "pins left.",
         )
