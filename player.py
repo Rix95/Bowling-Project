@@ -10,7 +10,7 @@ class Player(ABC):
         self._cumulative_round_score = [0 for _ in range(10)]
         self._round_bonus = [None for _ in range(10)]
         self.name = name
-        print("Player created:", name)
+        print("Player created:", name, "\n")
 
     @abstractmethod
     def throw():
