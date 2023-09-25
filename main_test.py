@@ -20,7 +20,9 @@ def main_test():
     # else:
     #     ai_name = "Sans"
     # computer = computer_player.ComputerPlayer(ai_name, difficulty_ai)
-    test_subject = test_player.TestPlayer("Test Subject 12341", 2, "test")
+    choice = int(input("Choice your test case from 1 to 4")) - 1
+
+    test_subject = test_player.TestPlayer("Test Subject 12341", choice, "test")
 
     game = bowling.Bowling([test_subject])
     game.start_game()
