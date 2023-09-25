@@ -1,6 +1,6 @@
-import bowling
-import human_player
-import computer_player
+import bowling.bowling as bowling
+import player.human_player as human_player
+import player.computer_player as computer_player
 
 
 def multiplayer():

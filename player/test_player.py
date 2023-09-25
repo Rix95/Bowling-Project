@@ -1,4 +1,4 @@
-from player import Player
+from player.player import Player
 
 available_tests = [
     [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],

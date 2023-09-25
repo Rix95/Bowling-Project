@@ -1,6 +1,6 @@
 import math
 import random
-from player import Player
+from player.player import Player
 
 
 class ComputerPlayer(Player):
@@ -46,7 +46,7 @@ class ComputerPlayer(Player):
 
     def get_random_first_throw(self):
         difficulty = self.difficulty_dict[self.difficulty]
-        print(self.difficulty_weights_first_throw[difficulty])
+
         return random.choices(
             range(11), weights=self.difficulty_weights_first_throw[difficulty]
         )[0]
