@@ -26,6 +26,7 @@ class Bowling:
         for player in self.players:
             if player.round_bonus[self.round] != None:
                 self.play_last_round(player)
+            print(player.cumulative_round_score)
             print(player.name, " Final score is: ", player.score)
         self.determine_winner(self.players)
 

@@ -9,9 +9,9 @@ class ComputerPlayer(Player):
         self.difficulty = difficulty
         self.difficulty_dict = {"easy": 0, "normal": 1, "hard": 2, "sans": 3}
         self.difficulty_weights_first_throw = [
-            [5, 7, 10, 17, 15, 12, 10, 7, 6, 6, 5, 1],
+            [5, 7, 10, 17, 15, 12, 10, 7, 6, 5, 1],
             [3, 4, 5, 10, 13, 17, 13, 11, 9, 8, 7],
-            [3, 4, 5, 10, 13, 17, 13, 11, 9, 8, 7],
+            [1, 2, 2, 3, 4, 5, 13, 15, 17, 18, 20],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99],
         ]
         self.difficulty_weights_second_throw = [[85, 15], [75, 25], [50, 50], [0, 100]]
@@ -46,6 +46,7 @@ class ComputerPlayer(Player):
 
     def get_random_first_throw(self):
         difficulty = self.difficulty_dict[self.difficulty]
+        print(self.difficulty_weights_first_throw[difficulty])
         return random.choices(
             range(11), weights=self.difficulty_weights_first_throw[difficulty]
         )[0]
