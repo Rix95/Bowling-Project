@@ -14,7 +14,7 @@ The following **features** are added:
 The following **additional** features are implemented:
 
 - [ ] User can play versus a machine with a defined difficulty.
-- [ ] Up to as many players per game
+- [ ] Up to as many desired players per game
 
 
 
