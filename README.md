@@ -7,7 +7,6 @@ Submitted by: **Ricardo Elizondo**
 
 The following **features** are added:
 
-- [ ] ****
 - [ ] **Bowling Class calculates cumulative score and current/final score**
 - [ ] **User throw by entering input manually**
 - [ ] **Partial GUI Implementation(20%)**
