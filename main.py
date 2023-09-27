@@ -136,7 +136,7 @@ def make_window(theme):
     return window
 
 
-def gui():
+def main():
     window = make_window(sg.theme())
     first_player = human_player.HumanPlayer(input("Enter your name: "))
     computer_name = ""
@@ -198,6 +198,5 @@ def gui():
     exit(0)
 
 
-if __name__ == "__gui__":
-    sg.theme("blue mono")
-    gui()
+sg.theme("blue mono")
+main()

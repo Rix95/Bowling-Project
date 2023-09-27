@@ -150,6 +150,7 @@ class Bowling:
             "strike" if current_throw == "first" else "spare"
         )
 
+    # determine winner(s) based on score
     def determine_winner(self, players):
         highest_score = 0
         winners = [players[0]]
