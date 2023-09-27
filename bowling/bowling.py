@@ -152,7 +152,7 @@ class Bowling:
 
     def determine_winner(self, players):
         highest_score = 0
-
+        winners = [players[0]]
         for player in players:
             if player.score > highest_score:
                 winners = [player]
