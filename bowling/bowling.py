@@ -27,6 +27,7 @@ class Bowling:
             if player.round_bonus[self.round] != None:
                 self.play_last_round(player)
             print(player.cumulative_round_score)
+            # print(player.round_score, player.pins_thrown_per_round) for debugging purposes and demo of results
             print(player.name, " Final score is: ", player.score)
         self.determine_winner(self.players)
 
@@ -153,7 +154,7 @@ class Bowling:
     # determine winner(s) based on score
     def determine_winner(self, players):
         highest_score = 0
-        winners = [players[0]]
+        winners = []
         for player in players:
             if player.score > highest_score:
                 winners = [player]

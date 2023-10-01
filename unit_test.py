@@ -20,9 +20,25 @@ def main_test():
     # else:
     #     ai_name = "Sans"
     # computer = computer_player.ComputerPlayer(ai_name, difficulty_ai)
-    choice = int(input("Choice your test case from 1 to 4")) - 1
+    choice = (
+        int(
+            input(
+                "Choice a number to pick a test case from the following options: \n 1: All Zeroes \n 2: All Strikes \n 3: All Spares \n 4: Custom Unit Case: \n"
+            )
+        )
+        - 1
+    )
+    name_of_test_case = ""
+    if choice == 1:
+        name_of_test_case = "Mr. Loser"
+    elif choice == 2:
+        name_of_test_case = "Ms. Striker"
+    elif choice == 3:
+        name_of_test_case = "Big Spare"
+    else:
+        name_of_test_case = "Mrs Unit Casey"
 
-    test_subject = test_player.TestPlayer("Test Subject 12341", choice, "test")
+    test_subject = test_player.TestPlayer(name_of_test_case, choice, "test")
 
     game = bowling.Bowling([test_subject])
     game.start_game()
